@@ -23,7 +23,7 @@ while True:
             print('please, deposit positives values!')
         else:
             balance += float(value_deposit)
-            historic_deposit.append(f'- value of {value_deposit} deposited.')
+            historic_deposit.append(f'- value of ${value_deposit} deposited.')
             print(f'value of {value_deposit} was deposited with success in your account!')
 
     elif option == '2':
