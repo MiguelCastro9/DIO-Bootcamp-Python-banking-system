@@ -9,7 +9,7 @@ LINES = 1000
 balance = 0
 limit_withdraw = 3
 historic_withdraw = []
-
+historic_deposit = []
 
 while True:
     
@@ -23,6 +23,7 @@ while True:
             print('please, deposit positives values!')
         else:
             balance += float(value_deposit)
+            historic_deposit.append(f'- value of {value_deposit} deposited.')
             print(f'value of {value_deposit} was deposited with success in your account!')
 
     elif option == '2':
@@ -47,13 +48,22 @@ while True:
         for ln in range(LINES):
             print()
         print(' ---------- $$$ EXTRACT $$$ ---------- ')
+        if len(historic_deposit) == 0:
+            print('HISTORIC DEPOSIT: did not have movimentation for deposits.')
+        else:
+            print('HISTORIC DEPOSIT:')
+            for d in historic_deposit:
+                print(d)
+        print('---------------------------------------')
+        if len(historic_withdraw) == 0:
+            print('HISTORIC WITHDRAW: did not have movimentation for withdraw.')
+        else:
+            print('HISTORIC WITHDRAW:')
+            for h in historic_withdraw:
+                print(h)
+        print('---------------------------------------')
         print(f'BALANCE: ${balance}')
         print(f'DAILY WITHDRAWAL: {limit_withdraw}')
-        print('HISTORIC WITHDRAW:')
-        for h in historic_withdraw:
-            print(h)
-        
-
     elif option == '4':
         for ln in range(LINES):
             print()
