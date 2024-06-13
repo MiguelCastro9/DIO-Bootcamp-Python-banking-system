@@ -1,20 +1,58 @@
 menu = """
-    [1] - DEPOSIT
-    [2] - WITHDRAW
-    [3] - EXTRACT
-    [4] - EXIT
+    [1] - REGISTER
+    [2] - LIST OF USERS
+    [3] - DEPOSIT
+    [4] - WITHDRAW
+    [5] - EXTRACT
+    [6] - EXIT
 """
 
 balance = [0]
 limit_withdraw = [3]
 historic_withdraw = []
 historic_deposit = []
+users_list = []
+
+def register_user():
+
+    cpf = input('Inform your CPF: ')
+    cpf = ''.join(filter(str.isdigit, cpf))
+    
+    for user in users_list:
+        if user['CPF'] == cpf:
+            print('This CPF already exists!')
+            return
+
+    address = {
+        'street': input('Inform your street: '),
+        'number': input('Inform the number: '),
+        'neighborhood': input('Inform the neighborhood: '),
+        'city': input('Inform the city: '),
+        'state': input('Inform the state abbreviation: ')
+    }
+
+    user = {
+        'name': input('Inform your name: '),
+        'date_of_birth': input('Inform your date of birth: '),
+        'CPF': cpf,
+        'address': address
+    }
+    for lu in users_list:
+        if lu['CPF'] == user['CPF']:
+            print('This CPF already exists!')
+            return
+    users_list.append(user)
+    print('User registered successfully!')
+
+def users_registers():
+    for lu in users_list:
+        print(lu)
 
 def clear():
     for ln in range(1000):
         print()
 
-def deposit(balance):
+def deposit(balance, /):
     value_deposit = input('how much you go deposit: ')
     if float(value_deposit) <= 0:
         print('please, deposit positives values!')
@@ -23,7 +61,7 @@ def deposit(balance):
         historic_deposit.append(f'- value of ${value_deposit} deposited.')
         print(f'value of {value_deposit} was deposited with success in your account!')
 
-def withdraw(balance, limit_withdraw):
+def withdraw(*, balance, limit_withdraw):
     value_withdraw = input('how much you go withdraw: ')
     if float(value_withdraw) <= 0:
         print('please, withdraw values positives!')
@@ -62,14 +100,20 @@ while True:
     option = input(menu)
     if option == '1': 
         clear()
-        deposit(balance)
-    elif option == '2':
+        register_user()
+    elif option == '2': 
         clear()
-        withdraw(balance, limit_withdraw)
-    elif option == '3':
+        users_registers()
+    elif option == '3': 
+        clear()
+        deposit(balance)
+    elif option == '4':
+        clear()
+        withdraw(balance=balance, limit_withdraw=limit_withdraw)
+    elif option == '5':
         clear()
         extract()
-    elif option == '4':
+    elif option == '6':
         clear()
         print('exited with success, thank you for use our system!')
         break
