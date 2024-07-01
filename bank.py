@@ -51,9 +51,11 @@ def register_user():
     users_list.append(user)
     print('User registered successfully!')
 
+
 def users_registers():
     for lu in users_list:
         print(lu)
+
 
 def clear():
     for ln in range(1000):
