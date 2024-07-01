@@ -60,22 +60,25 @@ def clear():
         print()
 
 
-def check_user_exists(user_cpf):
+def check_user_exists(cpf):
     user_found = False
     for lu in users_list:
-        if lu['CPF'] == user_cpf:
+        if lu['CPF'] == cpf:
             user_found = True
             break
     if not user_found:
-        print('CPF not found. Please, first you need to register the user.')
+        print('CPF not found. Please, first do you need to register the user.')
     return user_found
 
 
 def deposit():
-    user_cpf = input('inform your CPF: ')
-    if check_user_exists(user_cpf):
+
+    cpf = input('inform your CPF: ')
+    cpf = ''.join(filter(str.isdigit, cpf))
+
+    if check_user_exists(cpf):
         for lu in users_list:
-            if lu['CPF'] == user_cpf:
+            if lu['CPF'] == cpf:
                 value_deposit = input('how much you go deposit: ')
                 if float(value_deposit) <= 0:
                     print('please, deposit positives values!')
@@ -85,14 +88,17 @@ def deposit():
                     print(f'value of {value_deposit} was deposited with success in your account!')
                     break
     else:
-        print('CPF not found. please, first do you need do a register of user.')
+        return
 
 
 def withdraw():
-    user_cpf = input('inform your CPF: ')
-    if check_user_exists(user_cpf):
+
+    cpf = input('inform your CPF: ')
+    cpf = ''.join(filter(str.isdigit, cpf))
+
+    if check_user_exists(cpf):
         for lu in users_list:
-            if lu['CPF'] == user_cpf:
+            if lu['CPF'] == cpf:
                 value_withdraw = input('how much you go withdraw: ')
                 if float(value_withdraw) <= 0:
                     print('please, withdraw values positives!')
@@ -108,14 +114,17 @@ def withdraw():
                     lu['historic_withdraw'].append(f'- value of ${value_withdraw} drawee.')
                     print(f'value of {value_withdraw} was drawee with success from your account!')
     else:
-        print('CPF not found. please, first do you need do a register of user.')
+        return
 
 
 def extract():
-    user_cpf = input('inform your CPF: ')
-    if check_user_exists(user_cpf):
+
+    cpf = input('inform your CPF: ')
+    cpf = ''.join(filter(str.isdigit, cpf))
+
+    if check_user_exists(cpf):
         for lu in users_list:
-            if lu['CPF'] == user_cpf:
+            if lu['CPF'] == cpf:
                 print(' ---------- $$$ EXTRACT $$$ ---------- ')
                 if lu['historic_deposit'] == []:
                     print('HISTORIC DEPOSIT: did not have movimentation for deposits.')
@@ -135,7 +144,7 @@ def extract():
                         print(f'DAILY WITHDRAWAL: {lu['limit_withdraw']}')
                         break
     else:
-        print('CPF not found. please, first do you need do a register of user.')
+        return
 
 
 while True:
