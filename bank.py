@@ -12,8 +12,13 @@ limit_withdraw = [3]
 historic_withdraw = []
 historic_deposit = []
 users_list = []
+account_list = []
+number_account = 0
 
 def register_user():
+
+    global number_account
+    number_account += 1
 
     cpf = input('Inform your CPF: ')
     cpf = ''.join(filter(str.isdigit, cpf))
@@ -35,7 +40,9 @@ def register_user():
         'name': input('Inform your name: '),
         'date_of_birth': input('Inform your date of birth: '),
         'CPF': cpf,
-        'address': address
+        'address': address,
+        'agency': '0001',
+        'number_account': number_account
     }
     for lu in users_list:
         if lu['CPF'] == user['CPF']:
