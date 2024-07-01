@@ -1,6 +1,47 @@
-# Overview
+# Overview - bank-v2
 
-<code>bank-v1</code>
+Create a banking system with operations: withdraw, deposit and view statements.
+
+
+### Challenge
+
+We need to make our code more modularized, to do this we will create functions for existing operations: withdraw, deposit and view history. Furthermore, for version 2 of our system we need to create two new functions: create user (bank customer) and create current account (link with user).
+
+### Separations in functions
+
+We must create functions for all system operations, to exercise everything we learned in this module, each function will have a rule for passing arguments. The return and the way they will be called can be defined by you as you see fit.
+
+### Withdraw
+
+The withdrawal function must receive arguments only by name (keyword only). Suggested arguments: balance, value, statement, limit, number_withdrawals, limit_withdrawals. Return suggestion: <code>balance</code> and <code>statement</code>.
+
+### Deposit
+
+The deposit function must receive arguments only by positional only. Suggested arguments: balance, value, statement. Return suggestion: balance and statement.
+
+### Extract
+
+The extract function must receive arguments by position and name (positional only and keyword only). Positional arguments: balance, named arguments: extract.
+
+### New functions
+
+We need to create two new functions: create user and create current account. Feel free to add more functions, for example: list accounts.
+
+### Register user (client)
+
+The program must store users in a list, a user consists of: name, date of birth, social security number and address. The address is a string with the format: street, number - neighborhood - city/state acronym. Only CPF numbers must be stored. We cannot register 2 users with the same CPF.
+
+### Register current account
+
+The program must store accounts in a list, an account is composed of: agency, account number and user. The account number is sequential, starting from 1. The branch number is fixed: "0001". A user can have more than one account, but an account belongs to only one user.
+
+### Demo
+
+https://github.com/MiguelCastro9/DIO-Bootcamp-Python-banking-system/assets/56695817/41ff20d3-4fd1-4053-9e5f-fbbcecc93a36
+
+<br><br>
+
+# Overview - bank-v1
 
 Create a banking system with operations: withdraw, deposit and view statements.
 
