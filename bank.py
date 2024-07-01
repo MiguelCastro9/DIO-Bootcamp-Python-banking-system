@@ -7,10 +7,6 @@ menu = """
     [6] - EXIT
 """
 
-balance = [0]
-limit_withdraw = [3]
-historic_withdraw = []
-historic_deposit = []
 users_list = []
 account_list = []
 number_account = 0
@@ -42,7 +38,11 @@ def register_user():
         'CPF': cpf,
         'address': address,
         'agency': '0001',
-        'number_account': number_account
+        'number_account': number_account,
+        'balance': 0.0,
+        'historic_deposit': [],
+        'historic_withdraw': [],
+        'limit_withdraw': 3
     }
     for lu in users_list:
         if lu['CPF'] == user['CPF']:
@@ -59,49 +59,84 @@ def clear():
     for ln in range(1000):
         print()
 
-def deposit(balance, /):
-    value_deposit = input('how much you go deposit: ')
-    if float(value_deposit) <= 0:
-        print('please, deposit positives values!')
-    else:
-        balance[0] += float(value_deposit)
-        historic_deposit.append(f'- value of ${value_deposit} deposited.')
-        print(f'value of {value_deposit} was deposited with success in your account!')
 
-def withdraw(*, balance, limit_withdraw):
-    value_withdraw = input('how much you go withdraw: ')
-    if float(value_withdraw) <= 0:
-        print('please, withdraw values positives!')
-    elif float(value_withdraw) > balance[0]:
-        print('insufficient balance.')
-    elif limit_withdraw[0] == 0:
-        print('daily withdrawal limit reached.')
-    elif float(value_withdraw) > 500:
-        print('the limit value withdraw is $500.')
+def check_user_exists(user_cpf):
+    user_found = False
+    for lu in users_list:
+        if lu['CPF'] == user_cpf:
+            user_found = True
+            break
+    if not user_found:
+        print('CPF not found. Please, first you need to register the user.')
+    return user_found
+
+
+def deposit():
+    user_cpf = input('inform your CPF: ')
+    if check_user_exists(user_cpf):
+        for lu in users_list:
+            if lu['CPF'] == user_cpf:
+                value_deposit = input('how much you go deposit: ')
+                if float(value_deposit) <= 0:
+                    print('please, deposit positives values!')
+                else:
+                    lu['balance'] += float(value_deposit)
+                    lu['historic_deposit'].append(f'- value of ${value_deposit} deposited.')
+                    print(f'value of {value_deposit} was deposited with success in your account!')
+                    break
     else:
-        balance[0] -= float(value_withdraw)
-        limit_withdraw[0] -= 1
-        historic_withdraw.append(f'- value of ${value_withdraw} drawee.')
-        print(f'value of {value_withdraw} was drawee with success from your account!')
+        print('CPF not found. please, first do you need do a register of user.')
+
+
+def withdraw():
+    user_cpf = input('inform your CPF: ')
+    if check_user_exists(user_cpf):
+        for lu in users_list:
+            if lu['CPF'] == user_cpf:
+                value_withdraw = input('how much you go withdraw: ')
+                if float(value_withdraw) <= 0:
+                    print('please, withdraw values positives!')
+                elif float(value_withdraw) > lu['balance']:
+                    print('insufficient balance.')
+                elif lu['limit_withdraw'] == 0:
+                    print('daily withdrawal limit reached.')
+                elif float(value_withdraw) > 500:
+                    print('the limit value withdraw is $500.')
+                else:
+                    lu['balance'] -= float(value_withdraw)
+                    lu['limit_withdraw'] -= 1
+                    lu['historic_withdraw'].append(f'- value of ${value_withdraw} drawee.')
+                    print(f'value of {value_withdraw} was drawee with success from your account!')
+    else:
+        print('CPF not found. please, first do you need do a register of user.')
+
 
 def extract():
-    print(' ---------- $$$ EXTRACT $$$ ---------- ')
-    if len(historic_deposit) == 0:
-        print('HISTORIC DEPOSIT: did not have movimentation for deposits.')
+    user_cpf = input('inform your CPF: ')
+    if check_user_exists(user_cpf):
+        for lu in users_list:
+            if lu['CPF'] == user_cpf:
+                print(' ---------- $$$ EXTRACT $$$ ---------- ')
+                if lu['historic_deposit'] == []:
+                    print('HISTORIC DEPOSIT: did not have movimentation for deposits.')
+                else:
+                    print('HISTORIC DEPOSIT:')
+                    for d in lu['historic_deposit']:
+                        print(d)
+                        print('---------------------------------------')
+                        if lu['historic_withdraw'] == []:
+                            print('HISTORIC WITHDRAW: did not have movimentation for withdraw.')
+                        else:
+                            print('HISTORIC WITHDRAW:')
+                            for w in lu['historic_withdraw']:
+                                print(w)
+                        print('---------------------------------------')
+                        print(f'BALANCE: ${lu['balance']}')
+                        print(f'DAILY WITHDRAWAL: {lu['limit_withdraw']}')
+                        break
     else:
-        print('HISTORIC DEPOSIT:')
-        for d in historic_deposit:
-            print(d)
-        print('---------------------------------------')
-        if len(historic_withdraw) == 0:
-            print('HISTORIC WITHDRAW: did not have movimentation for withdraw.')
-        else:
-            print('HISTORIC WITHDRAW:')
-            for h in historic_withdraw:
-                print(h)
-        print('---------------------------------------')
-        print(f'BALANCE: ${balance[0]}')
-        print(f'DAILY WITHDRAWAL: {limit_withdraw}')
+        print('CPF not found. please, first do you need do a register of user.')
+
 
 while True:
     option = input(menu)
@@ -113,10 +148,10 @@ while True:
         users_registers()
     elif option == '3': 
         clear()
-        deposit(balance)
+        deposit()
     elif option == '4':
         clear()
-        withdraw(balance=balance, limit_withdraw=limit_withdraw)
+        withdraw()
     elif option == '5':
         clear()
         extract()
